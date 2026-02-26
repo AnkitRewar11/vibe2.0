@@ -64,9 +64,8 @@ function Hero() {
       console.log(result.data);
       toast.success('Project Created Successfully!');
 
-      //Navigate to playground
-
-      router.push(`/playground/${projectId}? frameId=${frameId}`);
+      // Navigate to playground
+      router.push(`/playground/${projectId}?frameId=${frameId}&prompt=${encodeURIComponent(userInput)}`);
       setLoading(false);
 
     } catch (e) {

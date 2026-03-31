@@ -6,12 +6,16 @@ import { frameTable } from "@/config/schema";
 
 export async function POST(req: NextRequest){
     const {projectId,frameId,messages} = await req.json();
+    console.log('MESSAGES:', JSON.stringify(messages)); // ← YE ADD KARO
+    console.log('NAME:', messages[0]?.content);   
+    
     const user = await currentUser();
 
     // create project
     const projectResult = await db.insert(projectTable).values({
         projectId: projectId,
         createdBy: user?.primaryEmailAddress?.emailAddress,
+        name: messages[0]?.content ?? 'Untitled Project',
 
     });
 

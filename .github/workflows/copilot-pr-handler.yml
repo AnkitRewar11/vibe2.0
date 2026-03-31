@@ -1,0 +1,79 @@
+name: Copilot PR Handler
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number'
+        required: false
+        type: string
+
+permissions:
+  actions: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  handle-copilot-pr:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      github.event.pull_request.user.login == 'copilot[bot]'
+    steps:
+      - name: Mark PR as Ready for Review
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_ACCESS_TOKEN }}
+          script: |
+            const prNumber = context.payload.pull_request?.number
+              || parseInt('${{ inputs.pr_number }}') || null;
+            if (!prNumber) return;
+
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+
+            if (pr.draft) {
+              await github.graphql(`
+                mutation($id: ID!) {
+                  markPullRequestReadyForReview(input: {pullRequestId: $id}) {
+                    pullRequest { isDraft }
+                  }
+                }`, { id: pr.node_id });
+              core.info(`✅ PR #${prNumber} ready for review!`);
+            }
+
+      - name: Approve Pending Workflow Runs
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_ACCESS_TOKEN }}
+          script: |
+            const headSha = context.payload.pull_request?.head?.sha;
+            const headRef = context.payload.pull_request?.head?.ref;
+            if (!headRef && !headSha) return;
+
+            const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              status: 'action_required',
+              per_page: 100
+            });
+
+            const pending = runs.workflow_runs.filter(r =>
+              (headSha && r.head_sha === headSha) ||
+              (headRef && r.head_branch === headRef)
+            );
+
+            for (const run of pending) {
+              await github.rest.actions.approveWorkflowRun({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: run.id
+              });
+              core.info(`✅ Approved: ${run.name}`);
+            }

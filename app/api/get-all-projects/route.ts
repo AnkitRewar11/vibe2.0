@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
     let results: {
         projectId: string;
         frameId: string;
+        name: string;
         chats: { id: number; chatMessage: any; createdBy: string; createdOn: Date }[];
     }[] = [];
 
@@ -42,6 +43,7 @@ export async function GET(req: NextRequest) {
                 projectId: project.projectId ?? '',
                 frameId: frame.frameId ?? '',
                 chats: chats.filter((c) => c.frameId === frame.frameId),
+                name: project.name ?? 'Untitled Project'
             });
         }
     }

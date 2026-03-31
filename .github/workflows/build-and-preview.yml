@@ -1,0 +1,35 @@
+name: Build and Preview Site
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  site-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install 🔧
+        run: npm install --legacy-peer-deps
+
+      - name: Build 🏗️
+        run: npm run build
+
+      - name: Zip Site
+        run: zip -r build-dir.zip ./.next
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-dir
+          path: ./build-dir.zip
+          retention-days: 1

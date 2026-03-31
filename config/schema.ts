@@ -19,6 +19,7 @@ export const usersTable = pgTable("users", {
 export const projectTable = pgTable("projects", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   projectId: varchar("project_id", { length: 255 }).notNull().unique(),
+  name: varchar("name", { length: 255 }),  // ← ADDED
   createdBy: varchar("created_by", { length: 255 }).references(
     () => usersTable.email
   ),
@@ -28,7 +29,7 @@ export const projectTable = pgTable("projects", {
 // frames table
 export const frameTable = pgTable("frames", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  designCode:text(),
+  designCode: text(),
   frameId: varchar("frame_id", { length: 255 }).notNull().unique(),
   projectId: varchar("project_id", { length: 255 }).references(
     () => projectTable.projectId
@@ -39,7 +40,7 @@ export const frameTable = pgTable("frames", {
 export const chatTable = pgTable("chats", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   chatMessage: json(),
-  frameId:varchar().references(() => frameTable.frameId),
+  frameId: varchar().references(() => frameTable.frameId),
   createdBy: varchar("created_by", { length: 255 }).references(() => usersTable.email),
   createdOn: timestamp("created_on").defaultNow(),
 });

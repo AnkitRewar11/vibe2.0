@@ -8,8 +8,8 @@ import { ArrowRight } from 'lucide-react'  // <-- only the icon you need
 import { SignInButton, useUser } from '@clerk/nextjs'
 
 const MenuOptions = [
-  { name: 'Pricing', path: '/pricing' },
-  { name: 'Contact us', path: '/contact-us' },
+  { name: 'Pricing', path: '/workspace/pricing' },
+{ name: 'Contact us', path: '/workspace/contact-us' },
 ]
 
 export default function Header() {

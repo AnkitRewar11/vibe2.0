@@ -374,7 +374,7 @@ export default function WebSiteDesign({ generatedCode }: Props) {
 
       // send to API
       const res = await axios.put(
-        "/api/frame",
+        "/api/frames",
         { designCode: html, frameId, projectId },
         { headers: { "Content-Type": "application/json" } }
       );

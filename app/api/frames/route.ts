@@ -51,7 +51,7 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ success: true, result });
   } catch (err) {
-    console.error("/api/frame PUT error:", err);
+    console.error("/api/frames PUT error:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

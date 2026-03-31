@@ -75,7 +75,7 @@ function PlayGround() {
 
   const GetFrameDetails = async () => {
     try {
-      const res = await axios.get(`/api/frame?frameId=${frameId}&projectId=${projectId}`, { timeout: 15000 });
+      const res = await axios.get(`/api/frames?frameId=${frameId}&projectId=${projectId}`, { timeout: 15000 });
       console.log('[GetFrameDetails] response', res.data);
       setFrameDetail(res.data);
 
@@ -255,7 +255,7 @@ function PlayGround() {
       return null;
     }
 
-    const url = '/api/frame';
+    const url = '/api/frames';
     console.log('[SaveGeneratedCode] PUT ->', { url, frameId, projectId, len: generatedCode.length });
 
     try {

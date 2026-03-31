@@ -4,6 +4,8 @@ import { db } from "@/config/db";
 import { eq } from "drizzle-orm";
 import { and } from "drizzle-orm";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const frameId = searchParams.get("frameId");

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { usersTable } from "@/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";

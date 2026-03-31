@@ -1,10 +1,12 @@
+export const dynamic = 'force-dynamic';
+
 import { chatTable, frameTable } from "@/config/schema";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/config/db";
 import { eq } from "drizzle-orm";
 import { and } from "drizzle-orm";
 
-export const dynamic = 'force-dynamic';
+
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);

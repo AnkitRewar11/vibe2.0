@@ -1,10 +1,12 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/config/db";
 import { chatTable, projectTable, usersTable } from "@/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import { frameTable } from "@/config/schema";
 
-export const dynamic = 'force-dynamic';
+
 
 export async function POST(req: NextRequest){
     const {projectId,frameId,messages} = await req.json();

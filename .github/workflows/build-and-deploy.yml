@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -21,10 +21,7 @@ jobs:
       - name: Install 🔧
         run: npm install --legacy-peer-deps
 
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
-
-      - name: Build 🏗️
+      - name: Build Check 🏗️
         run: npm run build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -38,9 +35,3 @@ jobs:
           NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT: ${{ secrets.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT }}
           NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY: ${{ secrets.NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY }}
           NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY }}
-
-      - name: Deploy to Netlify 🚀
-        run: netlify deploy --prod --dir=.next --skip-functions-cache
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

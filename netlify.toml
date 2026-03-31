@@ -1,5 +1,5 @@
 [build]
-  command = "echo 'Build done in CI'"
+  command = "npm run build"
   publish = ".next"
 
 [[plugins]]

@@ -21,6 +21,9 @@ jobs:
       - name: Install 🔧
         run: npm install --legacy-peer-deps
 
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
       - name: Build 🏗️
         run: npm run build
         env:
@@ -37,11 +40,7 @@ jobs:
           NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY }}
 
       - name: Deploy to Netlify 🚀
-        uses: nwtgck/actions-netlify@v3
-        with:
-          publish-dir: './.next'
-          production-deploy: true
-          github-token: ${{ secrets.GH_ACCESS_TOKEN }}
+        run: netlify deploy --prod --dir=.next
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

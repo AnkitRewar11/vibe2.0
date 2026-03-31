@@ -40,7 +40,7 @@ jobs:
           NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY }}
 
       - name: Deploy to Netlify 🚀
-        run: netlify deploy --prod --dir=.next
+        run: netlify deploy --prod --dir=.next --skip-functions-cache
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

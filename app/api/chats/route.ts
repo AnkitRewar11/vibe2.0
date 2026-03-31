@@ -3,6 +3,8 @@ import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/config/db";
 
+export const dynamic = 'force-dynamic';
+
 export async function PUT(req:NextRequest) {
     const {messages,frameId} =await req.json();
 
